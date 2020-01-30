@@ -1,3 +1,7 @@
+### Before building
+
+Before building the binaries, run ```git submodule update --init --recursive```, as updating the submodules won't work correctly in the conda-build environment.
+
 ### Building for macOS
 
 Running ```python macos_matrix_builder.py``` with python >= 3.6 will start the build process by setting all the environment variables and making a call to conda build. Make sure the meta.yaml file in conda-build/habitat-sim/ is configured correctly accoridng to https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html
