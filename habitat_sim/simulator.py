@@ -145,6 +145,21 @@ class Simulator:
                 f"Could not find navmesh {navmesh_filenname}, no collision checking will be done"
             )
 
+        agent_legacy_config = habitat_sim.AgentConfiguration()
+        default_agent_config = config.agents[config.sim_cfg.default_agent_id]
+        if not np.isclose(
+            agent_legacy_config.radius, default_agent_config.radius
+        ) or not np.isclose(agent_legacy_config.height, default_agent_config.height):
+            logger.info(
+                f"Recomputing navmesh for agent's height {default_agent_config.height} and radius"
+                f" {default_agent_config.radius}."
+            )
+            navmesh_settings = hsim.NavMeshSettings()
+            navmesh_settings.set_defaults()
+            navmesh_settings.agent_radius = default_agent_config.radius
+            navmesh_settings.agent_height = default_agent_config.height
+            self._sim.recompute_navmesh(self._sim.pathfinder, navmesh_settings)
+
     def reconfigure(self, config: Configuration):
         assert len(config.agents) > 0
 
